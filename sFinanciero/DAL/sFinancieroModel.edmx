@@ -1,0 +1,2417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="sisFinancieroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="banco">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="ubicacion" Type="varchar(max)" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'sisFinanciero.dbo.cheque' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="cheque">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="estado" Type="char" MaxLength="20" />
+          <Property Name="fechaEmision" Type="date" />
+          <Property Name="fechaVenc" Type="date" />
+          <Property Name="montoLiteral" Type="varchar" MaxLength="300" />
+          <Property Name="montoNumerico" Type="int" />
+          <Property Name="numSerie" Type="varchar" MaxLength="50" />
+          <Property Name="paguese" Type="varchar" MaxLength="30" />
+          <Property Name="idChequera" Type="int" />
+        </EntityType>
+        <EntityType Name="chequera">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="estado" Type="char" MaxLength="20" />
+          <Property Name="habiles" Type="int" />
+          <Property Name="cantidad" Type="int" />
+          <Property Name="idCuenta" Type="int" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaReg" Type="date" />
+          <Property Name="estado" Type="varchar" MaxLength="20" />
+          <Property Name="password" Type="varchar(max)" />
+          <Property Name="tipoC" Type="varchar" MaxLength="20" />
+          <Property Name="idPersona" Type="int" />
+          <Property Name="idTipoC" Type="int" />
+          <Property Name="idGrupo" Type="int" />
+          <Property Name="idEmpresa" Type="int" />
+        </EntityType>
+        <EntityType Name="credito">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="estado" Type="char" MaxLength="20" />
+          <Property Name="monto" Type="money" />
+          <Property Name="plazo" Type="date" />
+          <Property Name="idCuenta" Type="int" />
+        </EntityType>
+        <EntityType Name="cuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaApertura" Type="date" />
+          <Property Name="nroCuenta" Type="varchar(max)" />
+          <Property Name="saldo" Type="money" />
+          <Property Name="idcliente" Type="int" />
+          <Property Name="idMoneda" Type="int" />
+          <Property Name="idTipoCuenta" Type="int" />
+        </EntityType>
+        <EntityType Name="cuota">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idPlan" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPlan" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="estado" Type="char" MaxLength="20" />
+          <Property Name="monto" Type="decimal" Precision="11" Scale="4" />
+        </EntityType>
+        <EntityType Name="deposito">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="paterno" Type="varchar" MaxLength="50" />
+          <Property Name="materno" Type="varchar" MaxLength="50" />
+          <Property Name="ci" Type="int" />
+          <Property Name="fechaHora" Type="datetime" />
+          <Property Name="monto" Type="money" />
+          <Property Name="idCuenta" Type="int" />
+          <Property Name="idOficina" Type="int" />
+        </EntityType>
+        <EntityType Name="detalleMov">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idMov" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idMov" Type="int" Nullable="false" />
+          <Property Name="oficina" Type="varchar(max)" />
+          <Property Name="saldo" Type="money" />
+          <Property Name="ubicacion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="detalleServicio">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idServicio" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idServicio" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="detalleTrans">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idTrans" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTrans" Type="int" Nullable="false" />
+          <Property Name="cuenta" Type="varchar(max)" />
+          <Property Name="monto" Type="money" />
+          <Property Name="referencia" Type="varchar(max)" />
+          <Property Name="idMoneda" Type="int" />
+        </EntityType>
+        <EntityType Name="DPF">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaIni" Type="date" />
+          <Property Name="fechaFin" Type="date" />
+          <Property Name="monto" Type="money" />
+          <Property Name="idCliente" Type="int" />
+          <Property Name="idTipoDPF" Type="int" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nit" Type="int" />
+          <Property Name="paginaWeb" Type="varchar(max)" />
+          <Property Name="razonSocial" Type="varchar" MaxLength="50" />
+          <Property Name="telefono" Type="varchar" MaxLength="50" />
+          <Property Name="ubicacion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="grupo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaCreacion" Type="date" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="moneda">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="abreviatura" Type="char" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="movimiento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar(max)" />
+          <Property Name="fechaHora" Type="datetime" />
+          <Property Name="monto" Type="money" />
+          <Property Name="idCuenta" Type="int" />
+        </EntityType>
+        <EntityType Name="oficina">
+          <Key>
+            <PropertyRef Name="id_Of" />
+          </Key>
+          <Property Name="id_Of" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="ubicacion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="pago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaHora" Type="datetime" />
+          <Property Name="monto" Type="money" />
+        </EntityType>
+        <EntityType Name="persona">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ci" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="paterno" Type="varchar" MaxLength="50" />
+          <Property Name="materno" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar(max)" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="sexo" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="planPago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="montoTotal" Type="decimal" Precision="11" Scale="4" />
+          <Property Name="idCredito" Type="int" />
+        </EntityType>
+        <EntityType Name="retiro">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaHora" Type="datetime" />
+          <Property Name="monto" Type="money" />
+          <Property Name="idCuenta" Type="int" />
+          <Property Name="idOf" Type="int" />
+        </EntityType>
+        <EntityType Name="servicio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="descripcion" Type="varchar(max)" />
+          <Property Name="idCuenta" Type="int" />
+          <Property Name="idSocio" Type="int" />
+          <Property Name="idTipoServ" Type="int" />
+          <Property Name="idPago" Type="int" />
+        </EntityType>
+        <EntityType Name="socio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_ini" Type="date" />
+          <Property Name="fecha_fin" Type="date" />
+          <Property Name="idEmpresa" Type="int" />
+        </EntityType>
+        <EntityType Name="solicitud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="estado" Type="varchar" MaxLength="50" />
+          <Property Name="motivo" Type="varchar(max)" />
+          <Property Name="idTipoS" Type="int" />
+          <Property Name="idCliente" Type="int" />
+        </EntityType>
+        <EntityType Name="tarjeta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nro" Type="varchar(max)" />
+          <Property Name="fecha_ini" Type="date" />
+          <Property Name="fecha_fin" Type="date" />
+          <Property Name="estado" Type="char" MaxLength="20" />
+          <Property Name="idTipoCuenta" Type="int" />
+          <Property Name="idTipoTarjeta" Type="int" />
+        </EntityType>
+        <EntityType Name="tipoCambio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="abreviatura" Type="char" MaxLength="10" />
+          <Property Name="valor" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="idMoneda" Type="int" />
+        </EntityType>
+        <EntityType Name="tipoCliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar(max)" />
+          <Property Name="categoria" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tipoCuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tipoDPF">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar(max)" />
+          <Property Name="interes" Type="decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <EntityType Name="tipoServicio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tipoSolicitud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tipoTarjeta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="transaccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaHora" Type="datetime" />
+          <Property Name="estado" Type="char" MaxLength="20" />
+          <Property Name="idOfi" Type="int" />
+          <Property Name="idCuenta1" Type="int" />
+          <Property Name="idCuenta2" Type="int" />
+          <Property Name="idBanco" Type="int" />
+        </EntityType>
+        <Association Name="FK__cheque__idCheque__160F4887">
+          <End Role="chequera" Type="Self.chequera" Multiplicity="0..1" />
+          <End Role="cheque" Type="Self.cheque" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="chequera">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cheque">
+              <PropertyRef Name="idChequera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__chequera__idCuen__14270015">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="chequera" Type="Self.chequera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="chequera">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idEmpre__45F365D3">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idGrupo__44FF419A">
+          <End Role="grupo" Type="Self.grupo" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="grupo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idPerso__4316F928">
+          <End Role="persona" Type="Self.persona" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="persona">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idTipoC__440B1D61">
+          <End Role="tipoCliente" Type="Self.tipoCliente" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoCliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idTipoC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__credito__idCuent__72C60C4A">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="credito" Type="Self.credito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="credito">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__idclient__6383C8BA">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="idcliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__idMoneda__6477ECF3">
+          <End Role="moneda" Type="Self.moneda" Multiplicity="0..1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="moneda">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="idMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__idTipoCu__656C112C">
+          <End Role="tipoCuenta" Type="Self.tipoCuenta" Multiplicity="0..1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoCuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="idTipoCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuota__idPlan__787EE5A0">
+          <End Role="planPago" Type="Self.planPago" Multiplicity="1" />
+          <End Role="cuota" Type="Self.cuota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="planPago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuota">
+              <PropertyRef Name="idPlan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__deposito__idCuen__7B5B524B">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="deposito" Type="Self.deposito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="deposito">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__deposito__idOfic__7C4F7684">
+          <End Role="oficina" Type="Self.oficina" Multiplicity="0..1" />
+          <End Role="deposito" Type="Self.deposito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oficina">
+              <PropertyRef Name="id_Of" />
+            </Principal>
+            <Dependent Role="deposito">
+              <PropertyRef Name="idOficina" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleMo__idMov__114A936A">
+          <End Role="movimiento" Type="Self.movimiento" Multiplicity="1" />
+          <End Role="detalleMov" Type="Self.detalleMov" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movimiento">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleMov">
+              <PropertyRef Name="idMov" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleSe__idSer__6FE99F9F">
+          <End Role="servicio" Type="Self.servicio" Multiplicity="1" />
+          <End Role="detalleServicio" Type="Self.detalleServicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="servicio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleServicio">
+              <PropertyRef Name="idServicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleTr__idMon__0B91BA14">
+          <End Role="moneda" Type="Self.moneda" Multiplicity="0..1" />
+          <End Role="detalleTrans" Type="Self.detalleTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="moneda">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleTrans">
+              <PropertyRef Name="idMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleTr__idTra__0A9D95DB">
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="1" />
+          <End Role="detalleTrans" Type="Self.detalleTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="transaccion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleTrans">
+              <PropertyRef Name="idTrans" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DPF__idCliente__4E88ABD4">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="DPF" Type="Self.DPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DPF">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DPF__idTipoDPF__4F7CD00D">
+          <End Role="tipoDPF" Type="Self.tipoDPF" Multiplicity="0..1" />
+          <End Role="DPF" Type="Self.DPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoDPF">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DPF">
+              <PropertyRef Name="idTipoDPF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__movimient__idCue__0E6E26BF">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="movimiento" Type="Self.movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__planPago__idCred__75A278F5">
+          <End Role="credito" Type="Self.credito" Multiplicity="0..1" />
+          <End Role="planPago" Type="Self.planPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="credito">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="planPago">
+              <PropertyRef Name="idCredito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__retiro__idCuenta__7F2BE32F">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="retiro" Type="Self.retiro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="retiro">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__retiro__idOf__00200768">
+          <End Role="oficina" Type="Self.oficina" Multiplicity="0..1" />
+          <End Role="retiro" Type="Self.retiro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oficina">
+              <PropertyRef Name="id_Of" />
+            </Principal>
+            <Dependent Role="retiro">
+              <PropertyRef Name="idOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idCuen__6A30C649">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idPago__6D0D32F4">
+          <End Role="pago" Type="Self.pago" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idSoci__6B24EA82">
+          <End Role="socio" Type="Self.socio" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="socio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idSocio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idTipo__6C190EBB">
+          <End Role="tipoServicio" Type="Self.tipoServicio" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoServicio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idTipoServ" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__socio__idEmpresa__571DF1D5">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="0..1" />
+          <End Role="socio" Type="Self.socio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="socio">
+              <PropertyRef Name="idEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__solicitud__idCli__49C3F6B7">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="solicitud" Type="Self.solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="solicitud">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__solicitud__idTip__48CFD27E">
+          <End Role="tipoSolicitud" Type="Self.tipoSolicitud" Multiplicity="0..1" />
+          <End Role="solicitud" Type="Self.solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoSolicitud">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="solicitud">
+              <PropertyRef Name="idTipoS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tarjeta__idTipoC__5FB337D6">
+          <End Role="tipoCuenta" Type="Self.tipoCuenta" Multiplicity="0..1" />
+          <End Role="tarjeta" Type="Self.tarjeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoCuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tarjeta">
+              <PropertyRef Name="idTipoCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tarjeta__idTipoT__60A75C0F">
+          <End Role="tipoTarjeta" Type="Self.tipoTarjeta" Multiplicity="0..1" />
+          <End Role="tarjeta" Type="Self.tarjeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoTarjeta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tarjeta">
+              <PropertyRef Name="idTipoTarjeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tipoCambi__idMon__5441852A">
+          <End Role="moneda" Type="Self.moneda" Multiplicity="0..1" />
+          <End Role="tipoCambio" Type="Self.tipoCambio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="moneda">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tipoCambio">
+              <PropertyRef Name="idMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacci__idBan__07C12930">
+          <End Role="banco" Type="Self.banco" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="banco">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idBanco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacci__idCue__05D8E0BE">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idCuenta1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacci__idCue__06CD04F7">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idCuenta2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacci__idOfi__04E4BC85">
+          <End Role="oficina" Type="Self.oficina" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oficina">
+              <PropertyRef Name="id_Of" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idOfi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="sisFinancieroModelStoreContainer">
+          <EntitySet Name="banco" EntityType="Self.banco" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="chequera" EntityType="Self.chequera" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="credito" EntityType="Self.credito" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cuenta" EntityType="Self.cuenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cuota" EntityType="Self.cuota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="deposito" EntityType="Self.deposito" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalleMov" EntityType="Self.detalleMov" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalleServicio" EntityType="Self.detalleServicio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalleTrans" EntityType="Self.detalleTrans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DPF" EntityType="Self.DPF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="empresa" EntityType="Self.empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="grupo" EntityType="Self.grupo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="moneda" EntityType="Self.moneda" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="movimiento" EntityType="Self.movimiento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="oficina" EntityType="Self.oficina" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pago" EntityType="Self.pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="persona" EntityType="Self.persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="planPago" EntityType="Self.planPago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="retiro" EntityType="Self.retiro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="servicio" EntityType="Self.servicio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="socio" EntityType="Self.socio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="solicitud" EntityType="Self.solicitud" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tarjeta" EntityType="Self.tarjeta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoCambio" EntityType="Self.tipoCambio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoCliente" EntityType="Self.tipoCliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoCuenta" EntityType="Self.tipoCuenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoDPF" EntityType="Self.tipoDPF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoServicio" EntityType="Self.tipoServicio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoSolicitud" EntityType="Self.tipoSolicitud" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoTarjeta" EntityType="Self.tipoTarjeta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="transaccion" EntityType="Self.transaccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cheque" EntityType="Self.cheque" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [cheque].[id] AS [id], 
+    [cheque].[estado] AS [estado], 
+    [cheque].[fechaEmision] AS [fechaEmision], 
+    [cheque].[fechaVenc] AS [fechaVenc], 
+    [cheque].[montoLiteral] AS [montoLiteral], 
+    [cheque].[montoNumerico] AS [montoNumerico], 
+    [cheque].[numSerie] AS [numSerie], 
+    [cheque].[paguese] AS [paguese], 
+    [cheque].[idChequera] AS [idChequera]
+    FROM [dbo].[cheque] AS [cheque]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__cheque__idCheque__160F4887" Association="Self.FK__cheque__idCheque__160F4887">
+            <End Role="chequera" EntitySet="chequera" />
+            <End Role="cheque" EntitySet="cheque" />
+          </AssociationSet>
+          <AssociationSet Name="FK__chequera__idCuen__14270015" Association="Self.FK__chequera__idCuen__14270015">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="chequera" EntitySet="chequera" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idEmpre__45F365D3" Association="Self.FK__cliente__idEmpre__45F365D3">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idGrupo__44FF419A" Association="Self.FK__cliente__idGrupo__44FF419A">
+            <End Role="grupo" EntitySet="grupo" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idPerso__4316F928" Association="Self.FK__cliente__idPerso__4316F928">
+            <End Role="persona" EntitySet="persona" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idTipoC__440B1D61" Association="Self.FK__cliente__idTipoC__440B1D61">
+            <End Role="tipoCliente" EntitySet="tipoCliente" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__credito__idCuent__72C60C4A" Association="Self.FK__credito__idCuent__72C60C4A">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="credito" EntitySet="credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__idclient__6383C8BA" Association="Self.FK__cuenta__idclient__6383C8BA">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__idMoneda__6477ECF3" Association="Self.FK__cuenta__idMoneda__6477ECF3">
+            <End Role="moneda" EntitySet="moneda" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__idTipoCu__656C112C" Association="Self.FK__cuenta__idTipoCu__656C112C">
+            <End Role="tipoCuenta" EntitySet="tipoCuenta" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuota__idPlan__787EE5A0" Association="Self.FK__cuota__idPlan__787EE5A0">
+            <End Role="planPago" EntitySet="planPago" />
+            <End Role="cuota" EntitySet="cuota" />
+          </AssociationSet>
+          <AssociationSet Name="FK__deposito__idCuen__7B5B524B" Association="Self.FK__deposito__idCuen__7B5B524B">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="deposito" EntitySet="deposito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__deposito__idOfic__7C4F7684" Association="Self.FK__deposito__idOfic__7C4F7684">
+            <End Role="oficina" EntitySet="oficina" />
+            <End Role="deposito" EntitySet="deposito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleMo__idMov__114A936A" Association="Self.FK__detalleMo__idMov__114A936A">
+            <End Role="movimiento" EntitySet="movimiento" />
+            <End Role="detalleMov" EntitySet="detalleMov" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleSe__idSer__6FE99F9F" Association="Self.FK__detalleSe__idSer__6FE99F9F">
+            <End Role="servicio" EntitySet="servicio" />
+            <End Role="detalleServicio" EntitySet="detalleServicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleTr__idMon__0B91BA14" Association="Self.FK__detalleTr__idMon__0B91BA14">
+            <End Role="moneda" EntitySet="moneda" />
+            <End Role="detalleTrans" EntitySet="detalleTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleTr__idTra__0A9D95DB" Association="Self.FK__detalleTr__idTra__0A9D95DB">
+            <End Role="transaccion" EntitySet="transaccion" />
+            <End Role="detalleTrans" EntitySet="detalleTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DPF__idCliente__4E88ABD4" Association="Self.FK__DPF__idCliente__4E88ABD4">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="DPF" EntitySet="DPF" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DPF__idTipoDPF__4F7CD00D" Association="Self.FK__DPF__idTipoDPF__4F7CD00D">
+            <End Role="tipoDPF" EntitySet="tipoDPF" />
+            <End Role="DPF" EntitySet="DPF" />
+          </AssociationSet>
+          <AssociationSet Name="FK__movimient__idCue__0E6E26BF" Association="Self.FK__movimient__idCue__0E6E26BF">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__planPago__idCred__75A278F5" Association="Self.FK__planPago__idCred__75A278F5">
+            <End Role="credito" EntitySet="credito" />
+            <End Role="planPago" EntitySet="planPago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__retiro__idCuenta__7F2BE32F" Association="Self.FK__retiro__idCuenta__7F2BE32F">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="retiro" EntitySet="retiro" />
+          </AssociationSet>
+          <AssociationSet Name="FK__retiro__idOf__00200768" Association="Self.FK__retiro__idOf__00200768">
+            <End Role="oficina" EntitySet="oficina" />
+            <End Role="retiro" EntitySet="retiro" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idCuen__6A30C649" Association="Self.FK__servicio__idCuen__6A30C649">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idPago__6D0D32F4" Association="Self.FK__servicio__idPago__6D0D32F4">
+            <End Role="pago" EntitySet="pago" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idSoci__6B24EA82" Association="Self.FK__servicio__idSoci__6B24EA82">
+            <End Role="socio" EntitySet="socio" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idTipo__6C190EBB" Association="Self.FK__servicio__idTipo__6C190EBB">
+            <End Role="tipoServicio" EntitySet="tipoServicio" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__socio__idEmpresa__571DF1D5" Association="Self.FK__socio__idEmpresa__571DF1D5">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="socio" EntitySet="socio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__solicitud__idCli__49C3F6B7" Association="Self.FK__solicitud__idCli__49C3F6B7">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="solicitud" EntitySet="solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK__solicitud__idTip__48CFD27E" Association="Self.FK__solicitud__idTip__48CFD27E">
+            <End Role="tipoSolicitud" EntitySet="tipoSolicitud" />
+            <End Role="solicitud" EntitySet="solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tarjeta__idTipoC__5FB337D6" Association="Self.FK__tarjeta__idTipoC__5FB337D6">
+            <End Role="tipoCuenta" EntitySet="tipoCuenta" />
+            <End Role="tarjeta" EntitySet="tarjeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tarjeta__idTipoT__60A75C0F" Association="Self.FK__tarjeta__idTipoT__60A75C0F">
+            <End Role="tipoTarjeta" EntitySet="tipoTarjeta" />
+            <End Role="tarjeta" EntitySet="tarjeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tipoCambi__idMon__5441852A" Association="Self.FK__tipoCambi__idMon__5441852A">
+            <End Role="moneda" EntitySet="moneda" />
+            <End Role="tipoCambio" EntitySet="tipoCambio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacci__idBan__07C12930" Association="Self.FK__transacci__idBan__07C12930">
+            <End Role="banco" EntitySet="banco" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacci__idCue__05D8E0BE" Association="Self.FK__transacci__idCue__05D8E0BE">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacci__idCue__06CD04F7" Association="Self.FK__transacci__idCue__06CD04F7">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacci__idOfi__04E4BC85" Association="Self.FK__transacci__idOfi__04E4BC85">
+            <End Role="oficina" EntitySet="oficina" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="sisFinancieroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="banco">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ubicacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="transaccion" Relationship="Self.FK__transacci__idBan__07C12930" FromRole="banco" ToRole="transaccion" />
+        </EntityType>
+        <EntityType Name="chequera">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="estado" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="habiles" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="idCuenta" Type="Int32" />
+          <NavigationProperty Name="cheque" Relationship="Self.FK__cheque__idCheque__160F4887" FromRole="chequera" ToRole="cheque" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__chequera__idCuen__14270015" FromRole="chequera" ToRole="cuenta" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fechaReg" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="tipoC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="idPersona" Type="Int32" />
+          <Property Name="idTipoC" Type="Int32" />
+          <Property Name="idGrupo" Type="Int32" />
+          <Property Name="idEmpresa" Type="Int32" />
+          <NavigationProperty Name="empresa" Relationship="Self.FK__cliente__idEmpre__45F365D3" FromRole="cliente" ToRole="empresa" />
+          <NavigationProperty Name="grupo" Relationship="Self.FK__cliente__idGrupo__44FF419A" FromRole="cliente" ToRole="grupo" />
+          <NavigationProperty Name="persona" Relationship="Self.FK__cliente__idPerso__4316F928" FromRole="cliente" ToRole="persona" />
+          <NavigationProperty Name="tipoCliente" Relationship="Self.FK__cliente__idTipoC__440B1D61" FromRole="cliente" ToRole="tipoCliente" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__cuenta__idclient__6383C8BA" FromRole="cliente" ToRole="cuenta" />
+          <NavigationProperty Name="DPF" Relationship="Self.FK__DPF__idCliente__4E88ABD4" FromRole="cliente" ToRole="DPF" />
+          <NavigationProperty Name="solicitud" Relationship="Self.FK__solicitud__idCli__49C3F6B7" FromRole="cliente" ToRole="solicitud" />
+        </EntityType>
+        <EntityType Name="credito">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="plazo" Type="DateTime" Precision="0" />
+          <Property Name="idCuenta" Type="Int32" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__credito__idCuent__72C60C4A" FromRole="credito" ToRole="cuenta" />
+          <NavigationProperty Name="planPago" Relationship="Self.FK__planPago__idCred__75A278F5" FromRole="credito" ToRole="planPago" />
+        </EntityType>
+        <EntityType Name="cuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fechaApertura" Type="DateTime" Precision="0" />
+          <Property Name="nroCuenta" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="saldo" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="idcliente" Type="Int32" />
+          <Property Name="idMoneda" Type="Int32" />
+          <Property Name="idTipoCuenta" Type="Int32" />
+          <NavigationProperty Name="chequera" Relationship="Self.FK__chequera__idCuen__14270015" FromRole="cuenta" ToRole="chequera" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__cuenta__idclient__6383C8BA" FromRole="cuenta" ToRole="cliente" />
+          <NavigationProperty Name="credito" Relationship="Self.FK__credito__idCuent__72C60C4A" FromRole="cuenta" ToRole="credito" />
+          <NavigationProperty Name="moneda" Relationship="Self.FK__cuenta__idMoneda__6477ECF3" FromRole="cuenta" ToRole="moneda" />
+          <NavigationProperty Name="tipoCuenta" Relationship="Self.FK__cuenta__idTipoCu__656C112C" FromRole="cuenta" ToRole="tipoCuenta" />
+          <NavigationProperty Name="deposito" Relationship="Self.FK__deposito__idCuen__7B5B524B" FromRole="cuenta" ToRole="deposito" />
+          <NavigationProperty Name="movimiento" Relationship="Self.FK__movimient__idCue__0E6E26BF" FromRole="cuenta" ToRole="movimiento" />
+          <NavigationProperty Name="retiro" Relationship="Self.FK__retiro__idCuenta__7F2BE32F" FromRole="cuenta" ToRole="retiro" />
+          <NavigationProperty Name="servicio" Relationship="Self.FK__servicio__idCuen__6A30C649" FromRole="cuenta" ToRole="servicio" />
+          <NavigationProperty Name="transaccion" Relationship="Self.FK__transacci__idCue__05D8E0BE" FromRole="cuenta" ToRole="transaccion" />
+          <NavigationProperty Name="transaccion1" Relationship="Self.FK__transacci__idCue__06CD04F7" FromRole="cuenta" ToRole="transaccion" />
+        </EntityType>
+        <EntityType Name="cuota">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idPlan" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idPlan" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="monto" Type="Decimal" Precision="11" Scale="4" />
+          <NavigationProperty Name="planPago" Relationship="Self.FK__cuota__idPlan__787EE5A0" FromRole="cuota" ToRole="planPago" />
+        </EntityType>
+        <EntityType Name="deposito">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="paterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="materno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ci" Type="Int32" />
+          <Property Name="fechaHora" Type="DateTime" Precision="3" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="idCuenta" Type="Int32" />
+          <Property Name="idOficina" Type="Int32" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__deposito__idCuen__7B5B524B" FromRole="deposito" ToRole="cuenta" />
+          <NavigationProperty Name="oficina" Relationship="Self.FK__deposito__idOfic__7C4F7684" FromRole="deposito" ToRole="oficina" />
+        </EntityType>
+        <EntityType Name="detalleMov">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idMov" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idMov" Type="Int32" Nullable="false" />
+          <Property Name="oficina" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="saldo" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ubicacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="movimiento" Relationship="Self.FK__detalleMo__idMov__114A936A" FromRole="detalleMov" ToRole="movimiento" />
+        </EntityType>
+        <EntityType Name="detalleServicio">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idServicio" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idServicio" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="servicio" Relationship="Self.FK__detalleSe__idSer__6FE99F9F" FromRole="detalleServicio" ToRole="servicio" />
+        </EntityType>
+        <EntityType Name="detalleTrans">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="idTrans" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idTrans" Type="Int32" Nullable="false" />
+          <Property Name="cuenta" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="referencia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="idMoneda" Type="Int32" />
+          <NavigationProperty Name="moneda" Relationship="Self.FK__detalleTr__idMon__0B91BA14" FromRole="detalleTrans" ToRole="moneda" />
+          <NavigationProperty Name="transaccion" Relationship="Self.FK__detalleTr__idTra__0A9D95DB" FromRole="detalleTrans" ToRole="transaccion" />
+        </EntityType>
+        <EntityType Name="DPF">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fechaIni" Type="DateTime" Precision="0" />
+          <Property Name="fechaFin" Type="DateTime" Precision="0" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="idCliente" Type="Int32" />
+          <Property Name="idTipoDPF" Type="Int32" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__DPF__idCliente__4E88ABD4" FromRole="DPF" ToRole="cliente" />
+          <NavigationProperty Name="tipoDPF" Relationship="Self.FK__DPF__idTipoDPF__4F7CD00D" FromRole="DPF" ToRole="tipoDPF" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nit" Type="Int32" />
+          <Property Name="paginaWeb" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="razonSocial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ubicacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__cliente__idEmpre__45F365D3" FromRole="empresa" ToRole="cliente" />
+          <NavigationProperty Name="socio" Relationship="Self.FK__socio__idEmpresa__571DF1D5" FromRole="empresa" ToRole="socio" />
+        </EntityType>
+        <EntityType Name="grupo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fechaCreacion" Type="DateTime" Precision="0" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__cliente__idGrupo__44FF419A" FromRole="grupo" ToRole="cliente" />
+        </EntityType>
+        <EntityType Name="moneda">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="abreviatura" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__cuenta__idMoneda__6477ECF3" FromRole="moneda" ToRole="cuenta" />
+          <NavigationProperty Name="detalleTrans" Relationship="Self.FK__detalleTr__idMon__0B91BA14" FromRole="moneda" ToRole="detalleTrans" />
+          <NavigationProperty Name="tipoCambio" Relationship="Self.FK__tipoCambi__idMon__5441852A" FromRole="moneda" ToRole="tipoCambio" />
+        </EntityType>
+        <EntityType Name="movimiento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fechaHora" Type="DateTime" Precision="3" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="idCuenta" Type="Int32" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__movimient__idCue__0E6E26BF" FromRole="movimiento" ToRole="cuenta" />
+          <NavigationProperty Name="detalleMov" Relationship="Self.FK__detalleMo__idMov__114A936A" FromRole="movimiento" ToRole="detalleMov" />
+        </EntityType>
+        <EntityType Name="oficina">
+          <Key>
+            <PropertyRef Name="id_Of" />
+          </Key>
+          <Property Name="id_Of" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ubicacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="deposito" Relationship="Self.FK__deposito__idOfic__7C4F7684" FromRole="oficina" ToRole="deposito" />
+          <NavigationProperty Name="retiro" Relationship="Self.FK__retiro__idOf__00200768" FromRole="oficina" ToRole="retiro" />
+          <NavigationProperty Name="transaccion" Relationship="Self.FK__transacci__idOfi__04E4BC85" FromRole="oficina" ToRole="transaccion" />
+        </EntityType>
+        <EntityType Name="pago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fechaHora" Type="DateTime" Precision="3" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="servicio" Relationship="Self.FK__servicio__idPago__6D0D32F4" FromRole="pago" ToRole="servicio" />
+        </EntityType>
+        <EntityType Name="persona">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ci" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="paterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="materno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="sexo" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__cliente__idPerso__4316F928" FromRole="persona" ToRole="cliente" />
+        </EntityType>
+        <EntityType Name="planPago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="montoTotal" Type="Decimal" Precision="11" Scale="4" />
+          <Property Name="idCredito" Type="Int32" />
+          <NavigationProperty Name="credito" Relationship="Self.FK__planPago__idCred__75A278F5" FromRole="planPago" ToRole="credito" />
+          <NavigationProperty Name="cuota" Relationship="Self.FK__cuota__idPlan__787EE5A0" FromRole="planPago" ToRole="cuota" />
+        </EntityType>
+        <EntityType Name="retiro">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fechaHora" Type="DateTime" Precision="3" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="idCuenta" Type="Int32" />
+          <Property Name="idOf" Type="Int32" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__retiro__idCuenta__7F2BE32F" FromRole="retiro" ToRole="cuenta" />
+          <NavigationProperty Name="oficina" Relationship="Self.FK__retiro__idOf__00200768" FromRole="retiro" ToRole="oficina" />
+        </EntityType>
+        <EntityType Name="servicio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="idCuenta" Type="Int32" />
+          <Property Name="idSocio" Type="Int32" />
+          <Property Name="idTipoServ" Type="Int32" />
+          <Property Name="idPago" Type="Int32" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__servicio__idCuen__6A30C649" FromRole="servicio" ToRole="cuenta" />
+          <NavigationProperty Name="detalleServicio" Relationship="Self.FK__detalleSe__idSer__6FE99F9F" FromRole="servicio" ToRole="detalleServicio" />
+          <NavigationProperty Name="pago" Relationship="Self.FK__servicio__idPago__6D0D32F4" FromRole="servicio" ToRole="pago" />
+          <NavigationProperty Name="socio" Relationship="Self.FK__servicio__idSoci__6B24EA82" FromRole="servicio" ToRole="socio" />
+          <NavigationProperty Name="tipoServicio" Relationship="Self.FK__servicio__idTipo__6C190EBB" FromRole="servicio" ToRole="tipoServicio" />
+        </EntityType>
+        <EntityType Name="socio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fecha_ini" Type="DateTime" Precision="0" />
+          <Property Name="fecha_fin" Type="DateTime" Precision="0" />
+          <Property Name="idEmpresa" Type="Int32" />
+          <NavigationProperty Name="empresa" Relationship="Self.FK__socio__idEmpresa__571DF1D5" FromRole="socio" ToRole="empresa" />
+          <NavigationProperty Name="servicio" Relationship="Self.FK__servicio__idSoci__6B24EA82" FromRole="socio" ToRole="servicio" />
+        </EntityType>
+        <EntityType Name="solicitud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="motivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="idTipoS" Type="Int32" />
+          <Property Name="idCliente" Type="Int32" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__solicitud__idCli__49C3F6B7" FromRole="solicitud" ToRole="cliente" />
+          <NavigationProperty Name="tipoSolicitud" Relationship="Self.FK__solicitud__idTip__48CFD27E" FromRole="solicitud" ToRole="tipoSolicitud" />
+        </EntityType>
+        <EntityType Name="tarjeta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nro" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_ini" Type="DateTime" Precision="0" />
+          <Property Name="fecha_fin" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="idTipoCuenta" Type="Int32" />
+          <Property Name="idTipoTarjeta" Type="Int32" />
+          <NavigationProperty Name="tipoCuenta" Relationship="Self.FK__tarjeta__idTipoC__5FB337D6" FromRole="tarjeta" ToRole="tipoCuenta" />
+          <NavigationProperty Name="tipoTarjeta" Relationship="Self.FK__tarjeta__idTipoT__60A75C0F" FromRole="tarjeta" ToRole="tipoTarjeta" />
+        </EntityType>
+        <EntityType Name="tipoCambio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="abreviatura" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="valor" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="idMoneda" Type="Int32" />
+          <NavigationProperty Name="moneda" Relationship="Self.FK__tipoCambi__idMon__5441852A" FromRole="tipoCambio" ToRole="moneda" />
+        </EntityType>
+        <EntityType Name="tipoCliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="categoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__cliente__idTipoC__440B1D61" FromRole="tipoCliente" ToRole="cliente" />
+        </EntityType>
+        <EntityType Name="tipoCuenta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__cuenta__idTipoCu__656C112C" FromRole="tipoCuenta" ToRole="cuenta" />
+          <NavigationProperty Name="tarjeta" Relationship="Self.FK__tarjeta__idTipoC__5FB337D6" FromRole="tipoCuenta" ToRole="tarjeta" />
+        </EntityType>
+        <EntityType Name="tipoDPF">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="interes" Type="Decimal" Precision="4" Scale="2" />
+          <NavigationProperty Name="DPF" Relationship="Self.FK__DPF__idTipoDPF__4F7CD00D" FromRole="tipoDPF" ToRole="DPF" />
+        </EntityType>
+        <EntityType Name="tipoServicio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="servicio" Relationship="Self.FK__servicio__idTipo__6C190EBB" FromRole="tipoServicio" ToRole="servicio" />
+        </EntityType>
+        <EntityType Name="tipoSolicitud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="solicitud" Relationship="Self.FK__solicitud__idTip__48CFD27E" FromRole="tipoSolicitud" ToRole="solicitud" />
+        </EntityType>
+        <EntityType Name="tipoTarjeta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tarjeta" Relationship="Self.FK__tarjeta__idTipoT__60A75C0F" FromRole="tipoTarjeta" ToRole="tarjeta" />
+        </EntityType>
+        <EntityType Name="transaccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fechaHora" Type="DateTime" Precision="3" />
+          <Property Name="estado" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="idOfi" Type="Int32" />
+          <Property Name="idCuenta1" Type="Int32" />
+          <Property Name="idCuenta2" Type="Int32" />
+          <Property Name="idBanco" Type="Int32" />
+          <NavigationProperty Name="banco" Relationship="Self.FK__transacci__idBan__07C12930" FromRole="transaccion" ToRole="banco" />
+          <NavigationProperty Name="cuenta" Relationship="Self.FK__transacci__idCue__05D8E0BE" FromRole="transaccion" ToRole="cuenta" />
+          <NavigationProperty Name="cuenta1" Relationship="Self.FK__transacci__idCue__06CD04F7" FromRole="transaccion" ToRole="cuenta" />
+          <NavigationProperty Name="detalleTrans" Relationship="Self.FK__detalleTr__idTra__0A9D95DB" FromRole="transaccion" ToRole="detalleTrans" />
+          <NavigationProperty Name="oficina" Relationship="Self.FK__transacci__idOfi__04E4BC85" FromRole="transaccion" ToRole="oficina" />
+        </EntityType>
+        <EntityType Name="cheque">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="estado" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="fechaEmision" Type="DateTime" Precision="0" />
+          <Property Name="fechaVenc" Type="DateTime" Precision="0" />
+          <Property Name="montoLiteral" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="montoNumerico" Type="Int32" />
+          <Property Name="numSerie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="paguese" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="idChequera" Type="Int32" />
+          <NavigationProperty Name="chequera" Relationship="Self.FK__cheque__idCheque__160F4887" FromRole="cheque" ToRole="chequera" />
+        </EntityType>
+        <Association Name="FK__transacci__idBan__07C12930">
+          <End Role="banco" Type="Self.banco" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="banco">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idBanco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cheque__idCheque__160F4887">
+          <End Role="chequera" Type="Self.chequera" Multiplicity="0..1" />
+          <End Role="cheque" Type="Self.cheque" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="chequera">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cheque">
+              <PropertyRef Name="idChequera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__chequera__idCuen__14270015">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="chequera" Type="Self.chequera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="chequera">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idEmpre__45F365D3">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idGrupo__44FF419A">
+          <End Role="grupo" Type="Self.grupo" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="grupo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idPerso__4316F928">
+          <End Role="persona" Type="Self.persona" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="persona">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cliente__idTipoC__440B1D61">
+          <End Role="tipoCliente" Type="Self.tipoCliente" Multiplicity="0..1" />
+          <End Role="cliente" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoCliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cliente">
+              <PropertyRef Name="idTipoC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__idclient__6383C8BA">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="idcliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DPF__idCliente__4E88ABD4">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="DPF" Type="Self.DPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DPF">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__solicitud__idCli__49C3F6B7">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="solicitud" Type="Self.solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="solicitud">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__credito__idCuent__72C60C4A">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="credito" Type="Self.credito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="credito">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__planPago__idCred__75A278F5">
+          <End Role="credito" Type="Self.credito" Multiplicity="0..1" />
+          <End Role="planPago" Type="Self.planPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="credito">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="planPago">
+              <PropertyRef Name="idCredito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__idMoneda__6477ECF3">
+          <End Role="moneda" Type="Self.moneda" Multiplicity="0..1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="moneda">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="idMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuenta__idTipoCu__656C112C">
+          <End Role="tipoCuenta" Type="Self.tipoCuenta" Multiplicity="0..1" />
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoCuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuenta">
+              <PropertyRef Name="idTipoCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__deposito__idCuen__7B5B524B">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="deposito" Type="Self.deposito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="deposito">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__movimient__idCue__0E6E26BF">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="movimiento" Type="Self.movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__retiro__idCuenta__7F2BE32F">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="retiro" Type="Self.retiro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="retiro">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idCuen__6A30C649">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacci__idCue__05D8E0BE">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idCuenta1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacci__idCue__06CD04F7">
+          <End Role="cuenta" Type="Self.cuenta" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idCuenta2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__cuota__idPlan__787EE5A0">
+          <End Role="planPago" Type="Self.planPago" Multiplicity="1" />
+          <End Role="cuota" Type="Self.cuota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="planPago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cuota">
+              <PropertyRef Name="idPlan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__deposito__idOfic__7C4F7684">
+          <End Role="oficina" Type="Self.oficina" Multiplicity="0..1" />
+          <End Role="deposito" Type="Self.deposito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oficina">
+              <PropertyRef Name="id_Of" />
+            </Principal>
+            <Dependent Role="deposito">
+              <PropertyRef Name="idOficina" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleMo__idMov__114A936A">
+          <End Role="movimiento" Type="Self.movimiento" Multiplicity="1" />
+          <End Role="detalleMov" Type="Self.detalleMov" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movimiento">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleMov">
+              <PropertyRef Name="idMov" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleSe__idSer__6FE99F9F">
+          <End Role="servicio" Type="Self.servicio" Multiplicity="1" />
+          <End Role="detalleServicio" Type="Self.detalleServicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="servicio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleServicio">
+              <PropertyRef Name="idServicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleTr__idMon__0B91BA14">
+          <End Role="moneda" Type="Self.moneda" Multiplicity="0..1" />
+          <End Role="detalleTrans" Type="Self.detalleTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="moneda">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleTrans">
+              <PropertyRef Name="idMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalleTr__idTra__0A9D95DB">
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="1" />
+          <End Role="detalleTrans" Type="Self.detalleTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="transaccion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalleTrans">
+              <PropertyRef Name="idTrans" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DPF__idTipoDPF__4F7CD00D">
+          <End Role="tipoDPF" Type="Self.tipoDPF" Multiplicity="0..1" />
+          <End Role="DPF" Type="Self.DPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoDPF">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DPF">
+              <PropertyRef Name="idTipoDPF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__socio__idEmpresa__571DF1D5">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="0..1" />
+          <End Role="socio" Type="Self.socio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="socio">
+              <PropertyRef Name="idEmpresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tipoCambi__idMon__5441852A">
+          <End Role="moneda" Type="Self.moneda" Multiplicity="0..1" />
+          <End Role="tipoCambio" Type="Self.tipoCambio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="moneda">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tipoCambio">
+              <PropertyRef Name="idMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__retiro__idOf__00200768">
+          <End Role="oficina" Type="Self.oficina" Multiplicity="0..1" />
+          <End Role="retiro" Type="Self.retiro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oficina">
+              <PropertyRef Name="id_Of" />
+            </Principal>
+            <Dependent Role="retiro">
+              <PropertyRef Name="idOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacci__idOfi__04E4BC85">
+          <End Role="oficina" Type="Self.oficina" Multiplicity="0..1" />
+          <End Role="transaccion" Type="Self.transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oficina">
+              <PropertyRef Name="id_Of" />
+            </Principal>
+            <Dependent Role="transaccion">
+              <PropertyRef Name="idOfi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idPago__6D0D32F4">
+          <End Role="pago" Type="Self.pago" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pago">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idSoci__6B24EA82">
+          <End Role="socio" Type="Self.socio" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="socio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idSocio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__servicio__idTipo__6C190EBB">
+          <End Role="tipoServicio" Type="Self.tipoServicio" Multiplicity="0..1" />
+          <End Role="servicio" Type="Self.servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoServicio">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="servicio">
+              <PropertyRef Name="idTipoServ" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__solicitud__idTip__48CFD27E">
+          <End Role="tipoSolicitud" Type="Self.tipoSolicitud" Multiplicity="0..1" />
+          <End Role="solicitud" Type="Self.solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoSolicitud">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="solicitud">
+              <PropertyRef Name="idTipoS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tarjeta__idTipoC__5FB337D6">
+          <End Role="tipoCuenta" Type="Self.tipoCuenta" Multiplicity="0..1" />
+          <End Role="tarjeta" Type="Self.tarjeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoCuenta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tarjeta">
+              <PropertyRef Name="idTipoCuenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tarjeta__idTipoT__60A75C0F">
+          <End Role="tipoTarjeta" Type="Self.tipoTarjeta" Multiplicity="0..1" />
+          <End Role="tarjeta" Type="Self.tarjeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoTarjeta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tarjeta">
+              <PropertyRef Name="idTipoTarjeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="sisFinancieroEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="banco" EntityType="Self.banco" />
+          <EntitySet Name="chequera" EntityType="Self.chequera" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" />
+          <EntitySet Name="credito" EntityType="Self.credito" />
+          <EntitySet Name="cuenta" EntityType="Self.cuenta" />
+          <EntitySet Name="cuota" EntityType="Self.cuota" />
+          <EntitySet Name="deposito" EntityType="Self.deposito" />
+          <EntitySet Name="detalleMov" EntityType="Self.detalleMov" />
+          <EntitySet Name="detalleServicio" EntityType="Self.detalleServicio" />
+          <EntitySet Name="detalleTrans" EntityType="Self.detalleTrans" />
+          <EntitySet Name="DPF" EntityType="Self.DPF" />
+          <EntitySet Name="empresa" EntityType="Self.empresa" />
+          <EntitySet Name="grupo" EntityType="Self.grupo" />
+          <EntitySet Name="moneda" EntityType="Self.moneda" />
+          <EntitySet Name="movimiento" EntityType="Self.movimiento" />
+          <EntitySet Name="oficina" EntityType="Self.oficina" />
+          <EntitySet Name="pago" EntityType="Self.pago" />
+          <EntitySet Name="persona" EntityType="Self.persona" />
+          <EntitySet Name="planPago" EntityType="Self.planPago" />
+          <EntitySet Name="retiro" EntityType="Self.retiro" />
+          <EntitySet Name="servicio" EntityType="Self.servicio" />
+          <EntitySet Name="socio" EntityType="Self.socio" />
+          <EntitySet Name="solicitud" EntityType="Self.solicitud" />
+          <EntitySet Name="tarjeta" EntityType="Self.tarjeta" />
+          <EntitySet Name="tipoCambio" EntityType="Self.tipoCambio" />
+          <EntitySet Name="tipoCliente" EntityType="Self.tipoCliente" />
+          <EntitySet Name="tipoCuenta" EntityType="Self.tipoCuenta" />
+          <EntitySet Name="tipoDPF" EntityType="Self.tipoDPF" />
+          <EntitySet Name="tipoServicio" EntityType="Self.tipoServicio" />
+          <EntitySet Name="tipoSolicitud" EntityType="Self.tipoSolicitud" />
+          <EntitySet Name="tipoTarjeta" EntityType="Self.tipoTarjeta" />
+          <EntitySet Name="transaccion" EntityType="Self.transaccion" />
+          <EntitySet Name="cheque" EntityType="Self.cheque" />
+          <AssociationSet Name="FK__transacci__idBan__07C12930" Association="Self.FK__transacci__idBan__07C12930">
+            <End Role="banco" EntitySet="banco" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cheque__idCheque__160F4887" Association="Self.FK__cheque__idCheque__160F4887">
+            <End Role="chequera" EntitySet="chequera" />
+            <End Role="cheque" EntitySet="cheque" />
+          </AssociationSet>
+          <AssociationSet Name="FK__chequera__idCuen__14270015" Association="Self.FK__chequera__idCuen__14270015">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="chequera" EntitySet="chequera" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idEmpre__45F365D3" Association="Self.FK__cliente__idEmpre__45F365D3">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idGrupo__44FF419A" Association="Self.FK__cliente__idGrupo__44FF419A">
+            <End Role="grupo" EntitySet="grupo" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idPerso__4316F928" Association="Self.FK__cliente__idPerso__4316F928">
+            <End Role="persona" EntitySet="persona" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cliente__idTipoC__440B1D61" Association="Self.FK__cliente__idTipoC__440B1D61">
+            <End Role="tipoCliente" EntitySet="tipoCliente" />
+            <End Role="cliente" EntitySet="cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__idclient__6383C8BA" Association="Self.FK__cuenta__idclient__6383C8BA">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DPF__idCliente__4E88ABD4" Association="Self.FK__DPF__idCliente__4E88ABD4">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="DPF" EntitySet="DPF" />
+          </AssociationSet>
+          <AssociationSet Name="FK__solicitud__idCli__49C3F6B7" Association="Self.FK__solicitud__idCli__49C3F6B7">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="solicitud" EntitySet="solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK__credito__idCuent__72C60C4A" Association="Self.FK__credito__idCuent__72C60C4A">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="credito" EntitySet="credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__planPago__idCred__75A278F5" Association="Self.FK__planPago__idCred__75A278F5">
+            <End Role="credito" EntitySet="credito" />
+            <End Role="planPago" EntitySet="planPago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__idMoneda__6477ECF3" Association="Self.FK__cuenta__idMoneda__6477ECF3">
+            <End Role="moneda" EntitySet="moneda" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuenta__idTipoCu__656C112C" Association="Self.FK__cuenta__idTipoCu__656C112C">
+            <End Role="tipoCuenta" EntitySet="tipoCuenta" />
+            <End Role="cuenta" EntitySet="cuenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__deposito__idCuen__7B5B524B" Association="Self.FK__deposito__idCuen__7B5B524B">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="deposito" EntitySet="deposito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__movimient__idCue__0E6E26BF" Association="Self.FK__movimient__idCue__0E6E26BF">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__retiro__idCuenta__7F2BE32F" Association="Self.FK__retiro__idCuenta__7F2BE32F">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="retiro" EntitySet="retiro" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idCuen__6A30C649" Association="Self.FK__servicio__idCuen__6A30C649">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacci__idCue__05D8E0BE" Association="Self.FK__transacci__idCue__05D8E0BE">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacci__idCue__06CD04F7" Association="Self.FK__transacci__idCue__06CD04F7">
+            <End Role="cuenta" EntitySet="cuenta" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__cuota__idPlan__787EE5A0" Association="Self.FK__cuota__idPlan__787EE5A0">
+            <End Role="planPago" EntitySet="planPago" />
+            <End Role="cuota" EntitySet="cuota" />
+          </AssociationSet>
+          <AssociationSet Name="FK__deposito__idOfic__7C4F7684" Association="Self.FK__deposito__idOfic__7C4F7684">
+            <End Role="oficina" EntitySet="oficina" />
+            <End Role="deposito" EntitySet="deposito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleMo__idMov__114A936A" Association="Self.FK__detalleMo__idMov__114A936A">
+            <End Role="movimiento" EntitySet="movimiento" />
+            <End Role="detalleMov" EntitySet="detalleMov" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleSe__idSer__6FE99F9F" Association="Self.FK__detalleSe__idSer__6FE99F9F">
+            <End Role="servicio" EntitySet="servicio" />
+            <End Role="detalleServicio" EntitySet="detalleServicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleTr__idMon__0B91BA14" Association="Self.FK__detalleTr__idMon__0B91BA14">
+            <End Role="moneda" EntitySet="moneda" />
+            <End Role="detalleTrans" EntitySet="detalleTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalleTr__idTra__0A9D95DB" Association="Self.FK__detalleTr__idTra__0A9D95DB">
+            <End Role="transaccion" EntitySet="transaccion" />
+            <End Role="detalleTrans" EntitySet="detalleTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DPF__idTipoDPF__4F7CD00D" Association="Self.FK__DPF__idTipoDPF__4F7CD00D">
+            <End Role="tipoDPF" EntitySet="tipoDPF" />
+            <End Role="DPF" EntitySet="DPF" />
+          </AssociationSet>
+          <AssociationSet Name="FK__socio__idEmpresa__571DF1D5" Association="Self.FK__socio__idEmpresa__571DF1D5">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="socio" EntitySet="socio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tipoCambi__idMon__5441852A" Association="Self.FK__tipoCambi__idMon__5441852A">
+            <End Role="moneda" EntitySet="moneda" />
+            <End Role="tipoCambio" EntitySet="tipoCambio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__retiro__idOf__00200768" Association="Self.FK__retiro__idOf__00200768">
+            <End Role="oficina" EntitySet="oficina" />
+            <End Role="retiro" EntitySet="retiro" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacci__idOfi__04E4BC85" Association="Self.FK__transacci__idOfi__04E4BC85">
+            <End Role="oficina" EntitySet="oficina" />
+            <End Role="transaccion" EntitySet="transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idPago__6D0D32F4" Association="Self.FK__servicio__idPago__6D0D32F4">
+            <End Role="pago" EntitySet="pago" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idSoci__6B24EA82" Association="Self.FK__servicio__idSoci__6B24EA82">
+            <End Role="socio" EntitySet="socio" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__servicio__idTipo__6C190EBB" Association="Self.FK__servicio__idTipo__6C190EBB">
+            <End Role="tipoServicio" EntitySet="tipoServicio" />
+            <End Role="servicio" EntitySet="servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK__solicitud__idTip__48CFD27E" Association="Self.FK__solicitud__idTip__48CFD27E">
+            <End Role="tipoSolicitud" EntitySet="tipoSolicitud" />
+            <End Role="solicitud" EntitySet="solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tarjeta__idTipoC__5FB337D6" Association="Self.FK__tarjeta__idTipoC__5FB337D6">
+            <End Role="tipoCuenta" EntitySet="tipoCuenta" />
+            <End Role="tarjeta" EntitySet="tarjeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tarjeta__idTipoT__60A75C0F" Association="Self.FK__tarjeta__idTipoT__60A75C0F">
+            <End Role="tipoTarjeta" EntitySet="tipoTarjeta" />
+            <End Role="tarjeta" EntitySet="tarjeta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="sisFinancieroModelStoreContainer" CdmEntityContainer="sisFinancieroEntities">
+          <EntitySetMapping Name="banco">
+            <EntityTypeMapping TypeName="sisFinancieroModel.banco">
+              <MappingFragment StoreEntitySet="banco">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="chequera">
+            <EntityTypeMapping TypeName="sisFinancieroModel.chequera">
+              <MappingFragment StoreEntitySet="chequera">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="habiles" ColumnName="habiles" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="idCuenta" ColumnName="idCuenta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="sisFinancieroModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaReg" ColumnName="fechaReg" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="tipoC" ColumnName="tipoC" />
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="idTipoC" ColumnName="idTipoC" />
+                <ScalarProperty Name="idGrupo" ColumnName="idGrupo" />
+                <ScalarProperty Name="idEmpresa" ColumnName="idEmpresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="credito">
+            <EntityTypeMapping TypeName="sisFinancieroModel.credito">
+              <MappingFragment StoreEntitySet="credito">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="plazo" ColumnName="plazo" />
+                <ScalarProperty Name="idCuenta" ColumnName="idCuenta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cuenta">
+            <EntityTypeMapping TypeName="sisFinancieroModel.cuenta">
+              <MappingFragment StoreEntitySet="cuenta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaApertura" ColumnName="fechaApertura" />
+                <ScalarProperty Name="nroCuenta" ColumnName="nroCuenta" />
+                <ScalarProperty Name="saldo" ColumnName="saldo" />
+                <ScalarProperty Name="idcliente" ColumnName="idcliente" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+                <ScalarProperty Name="idTipoCuenta" ColumnName="idTipoCuenta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cuota">
+            <EntityTypeMapping TypeName="sisFinancieroModel.cuota">
+              <MappingFragment StoreEntitySet="cuota">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idPlan" ColumnName="idPlan" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="deposito">
+            <EntityTypeMapping TypeName="sisFinancieroModel.deposito">
+              <MappingFragment StoreEntitySet="deposito">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="paterno" ColumnName="paterno" />
+                <ScalarProperty Name="materno" ColumnName="materno" />
+                <ScalarProperty Name="ci" ColumnName="ci" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="idCuenta" ColumnName="idCuenta" />
+                <ScalarProperty Name="idOficina" ColumnName="idOficina" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalleMov">
+            <EntityTypeMapping TypeName="sisFinancieroModel.detalleMov">
+              <MappingFragment StoreEntitySet="detalleMov">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idMov" ColumnName="idMov" />
+                <ScalarProperty Name="oficina" ColumnName="oficina" />
+                <ScalarProperty Name="saldo" ColumnName="saldo" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalleServicio">
+            <EntityTypeMapping TypeName="sisFinancieroModel.detalleServicio">
+              <MappingFragment StoreEntitySet="detalleServicio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idServicio" ColumnName="idServicio" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalleTrans">
+            <EntityTypeMapping TypeName="sisFinancieroModel.detalleTrans">
+              <MappingFragment StoreEntitySet="detalleTrans">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idTrans" ColumnName="idTrans" />
+                <ScalarProperty Name="cuenta" ColumnName="cuenta" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="referencia" ColumnName="referencia" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DPF">
+            <EntityTypeMapping TypeName="sisFinancieroModel.DPF">
+              <MappingFragment StoreEntitySet="DPF">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaIni" ColumnName="fechaIni" />
+                <ScalarProperty Name="fechaFin" ColumnName="fechaFin" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+                <ScalarProperty Name="idTipoDPF" ColumnName="idTipoDPF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="empresa">
+            <EntityTypeMapping TypeName="sisFinancieroModel.empresa">
+              <MappingFragment StoreEntitySet="empresa">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nit" ColumnName="nit" />
+                <ScalarProperty Name="paginaWeb" ColumnName="paginaWeb" />
+                <ScalarProperty Name="razonSocial" ColumnName="razonSocial" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="grupo">
+            <EntityTypeMapping TypeName="sisFinancieroModel.grupo">
+              <MappingFragment StoreEntitySet="grupo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaCreacion" ColumnName="fechaCreacion" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="moneda">
+            <EntityTypeMapping TypeName="sisFinancieroModel.moneda">
+              <MappingFragment StoreEntitySet="moneda">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="abreviatura" ColumnName="abreviatura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="movimiento">
+            <EntityTypeMapping TypeName="sisFinancieroModel.movimiento">
+              <MappingFragment StoreEntitySet="movimiento">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="idCuenta" ColumnName="idCuenta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="oficina">
+            <EntityTypeMapping TypeName="sisFinancieroModel.oficina">
+              <MappingFragment StoreEntitySet="oficina">
+                <ScalarProperty Name="id_Of" ColumnName="id_Of" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pago">
+            <EntityTypeMapping TypeName="sisFinancieroModel.pago">
+              <MappingFragment StoreEntitySet="pago">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="persona">
+            <EntityTypeMapping TypeName="sisFinancieroModel.persona">
+              <MappingFragment StoreEntitySet="persona">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ci" ColumnName="ci" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="paterno" ColumnName="paterno" />
+                <ScalarProperty Name="materno" ColumnName="materno" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="planPago">
+            <EntityTypeMapping TypeName="sisFinancieroModel.planPago">
+              <MappingFragment StoreEntitySet="planPago">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="montoTotal" ColumnName="montoTotal" />
+                <ScalarProperty Name="idCredito" ColumnName="idCredito" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="retiro">
+            <EntityTypeMapping TypeName="sisFinancieroModel.retiro">
+              <MappingFragment StoreEntitySet="retiro">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="idCuenta" ColumnName="idCuenta" />
+                <ScalarProperty Name="idOf" ColumnName="idOf" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="servicio">
+            <EntityTypeMapping TypeName="sisFinancieroModel.servicio">
+              <MappingFragment StoreEntitySet="servicio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="idCuenta" ColumnName="idCuenta" />
+                <ScalarProperty Name="idSocio" ColumnName="idSocio" />
+                <ScalarProperty Name="idTipoServ" ColumnName="idTipoServ" />
+                <ScalarProperty Name="idPago" ColumnName="idPago" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="socio">
+            <EntityTypeMapping TypeName="sisFinancieroModel.socio">
+              <MappingFragment StoreEntitySet="socio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fecha_ini" ColumnName="fecha_ini" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="idEmpresa" ColumnName="idEmpresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="solicitud">
+            <EntityTypeMapping TypeName="sisFinancieroModel.solicitud">
+              <MappingFragment StoreEntitySet="solicitud">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="motivo" ColumnName="motivo" />
+                <ScalarProperty Name="idTipoS" ColumnName="idTipoS" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tarjeta">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tarjeta">
+              <MappingFragment StoreEntitySet="tarjeta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nro" ColumnName="nro" />
+                <ScalarProperty Name="fecha_ini" ColumnName="fecha_ini" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="idTipoCuenta" ColumnName="idTipoCuenta" />
+                <ScalarProperty Name="idTipoTarjeta" ColumnName="idTipoTarjeta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoCambio">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tipoCambio">
+              <MappingFragment StoreEntitySet="tipoCambio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="abreviatura" ColumnName="abreviatura" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoCliente">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tipoCliente">
+              <MappingFragment StoreEntitySet="tipoCliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="categoria" ColumnName="categoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoCuenta">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tipoCuenta">
+              <MappingFragment StoreEntitySet="tipoCuenta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoDPF">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tipoDPF">
+              <MappingFragment StoreEntitySet="tipoDPF">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="interes" ColumnName="interes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoServicio">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tipoServicio">
+              <MappingFragment StoreEntitySet="tipoServicio">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoSolicitud">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tipoSolicitud">
+              <MappingFragment StoreEntitySet="tipoSolicitud">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoTarjeta">
+            <EntityTypeMapping TypeName="sisFinancieroModel.tipoTarjeta">
+              <MappingFragment StoreEntitySet="tipoTarjeta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="transaccion">
+            <EntityTypeMapping TypeName="sisFinancieroModel.transaccion">
+              <MappingFragment StoreEntitySet="transaccion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="idOfi" ColumnName="idOfi" />
+                <ScalarProperty Name="idCuenta1" ColumnName="idCuenta1" />
+                <ScalarProperty Name="idCuenta2" ColumnName="idCuenta2" />
+                <ScalarProperty Name="idBanco" ColumnName="idBanco" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cheque">
+            <EntityTypeMapping TypeName="sisFinancieroModel.cheque">
+              <MappingFragment StoreEntitySet="cheque">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fechaEmision" ColumnName="fechaEmision" />
+                <ScalarProperty Name="fechaVenc" ColumnName="fechaVenc" />
+                <ScalarProperty Name="montoLiteral" ColumnName="montoLiteral" />
+                <ScalarProperty Name="montoNumerico" ColumnName="montoNumerico" />
+                <ScalarProperty Name="numSerie" ColumnName="numSerie" />
+                <ScalarProperty Name="paguese" ColumnName="paguese" />
+                <ScalarProperty Name="idChequera" ColumnName="idChequera" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

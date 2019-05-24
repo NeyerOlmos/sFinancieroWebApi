@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e484946cda95495e909c031993161474" Name="Diagram1">
+        <EntityTypeShape EntityType="sisFinancieroModel.banco" Width="1.5" PointX="9" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.chequera" Width="1.5" PointX="5.25" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.cliente" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.credito" Width="1.5" PointX="5.25" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.cuenta" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.cuota" Width="1.5" PointX="9.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.deposito" Width="1.5" PointX="8.25" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.detalleMov" Width="1.5" PointX="7.5" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.detalleServicio" Width="1.5" PointX="12.5" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.detalleTrans" Width="1.5" PointX="13.5" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.DPF" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.empresa" Width="1.5" PointX="1.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.grupo" Width="1.5" PointX="1.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.moneda" Width="1.5" PointX="0.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.movimiento" Width="1.5" PointX="5.25" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.oficina" Width="1.5" PointX="6" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.pago" Width="1.5" PointX="8" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.persona" Width="1.5" PointX="1.5" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.planPago" Width="1.5" PointX="7.5" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.retiro" Width="1.5" PointX="5.25" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.servicio" Width="1.5" PointX="10.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.socio" Width="1.5" PointX="8" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.solicitud" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tarjeta" Width="1.5" PointX="4" PointY="31" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tipoCambio" Width="1.5" PointX="3" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tipoCliente" Width="1.5" PointX="1.5" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tipoCuenta" Width="1.5" PointX="0.75" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tipoDPF" Width="1.5" PointX="0.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tipoServicio" Width="1.5" PointX="8" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tipoSolicitud" Width="1.5" PointX="0.75" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.tipoTarjeta" Width="1.5" PointX="1.75" PointY="32.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.transaccion" Width="1.5" PointX="11.25" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sisFinancieroModel.cheque" Width="1.5" PointX="7.5" PointY="12.75" IsExpanded="true" />
+        <AssociationConnector Association="sisFinancieroModel.FK__transacci__idBan__07C12930" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cheque__idCheque__160F4887" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__chequera__idCuen__14270015" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cliente__idEmpre__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cliente__idGrupo__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cliente__idPerso__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cliente__idTipoC__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cuenta__idclient__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__DPF__idCliente__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__solicitud__idCli__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__credito__idCuent__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__planPago__idCred__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cuenta__idMoneda__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cuenta__idTipoCu__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__deposito__idCuen__7B5B524B" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__movimient__idCue__0E6E26BF" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__retiro__idCuenta__7F2BE32F" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__servicio__idCuen__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__transacci__idCue__05D8E0BE" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__transacci__idCue__06CD04F7" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__cuota__idPlan__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__deposito__idOfic__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__detalleMo__idMov__114A936A" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__detalleSe__idSer__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__detalleTr__idMon__0B91BA14" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__detalleTr__idTra__0A9D95DB" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__DPF__idTipoDPF__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__socio__idEmpresa__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__tipoCambi__idMon__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__retiro__idOf__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__transacci__idOfi__04E4BC85" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__servicio__idPago__6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__servicio__idSoci__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__servicio__idTipo__6C190EBB" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__solicitud__idTip__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__tarjeta__idTipoC__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="sisFinancieroModel.FK__tarjeta__idTipoT__60A75C0F" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
