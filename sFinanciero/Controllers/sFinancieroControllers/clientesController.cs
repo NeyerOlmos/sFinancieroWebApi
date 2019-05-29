@@ -87,6 +87,7 @@ namespace sFinanciero.Controllers.sFinancieroControllers
 
         // POST: api/clientes
         [ResponseType(typeof(cliente))]
+        
         public async Task<IHttpActionResult> Postcliente(cliente cliente)
         {
             if (!ModelState.IsValid)

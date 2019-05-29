@@ -20,7 +20,7 @@ namespace sFinanciero
 
 
             // Configuración y servicios de Web API
-            //EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            //EnableCorsAttribute cors = new EnableCorsAttribute("http://sfinanciero.herokuapp.com , http://localhost:4200", "*", "*");
             //config.EnableCors(cors);
             config.EnableCors();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -13,6 +14,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json.Linq;
+using sFinanciero.DAL;
 using sFinanciero.Models;
 using sFinanciero.Providers;
 using sFinanciero.Results;
@@ -25,7 +28,7 @@ namespace sFinanciero.Controllers
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
-
+        private sisFinancieroEntities db = new sisFinancieroEntities();
         public AccountController()
         {
         }
@@ -323,23 +326,37 @@ namespace sFinanciero.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(AccountModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            
+            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
+            persona persona = new persona() {nombre=model.FirstName,paterno=model.LastName };
+            db.persona.Add(persona);
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
             UserManager.AddToRoles(user.Id, model.Roles);
+           // UserManager.AddToRoles(user.Id, model.Roles);
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
             }
-
+            db.SaveChanges();
             return Ok();
         }
+        // get api/Account/GetRolesByUser
+        [Authorize]
+        [Route("GetRolesByUser")]
+        [HttpPost]
+        public IHttpActionResult GetRolesByUser(JObject jObject)
+        {
+            string username = jObject.GetValue("username").ToString();
 
+           ApplicationUser user= UserManager.FindByName(username);
+            
+          return   Content(System.Net.HttpStatusCode.OK, UserManager.GetRoles(user.Id))  ;
+        }
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]

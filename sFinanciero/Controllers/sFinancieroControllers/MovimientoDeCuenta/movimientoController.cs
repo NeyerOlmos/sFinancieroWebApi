@@ -16,6 +16,7 @@ namespace sFinanciero.Controllers.sFinancieroControllers.MovimientoDeCuenta
 
         [HttpPost]
         [Route("api/RealizarTransferencia")]
+        [Authorize(Roles ="Admin,Operador,Cliente")]
         public IHttpActionResult RealizarTransferencia(JObject jObject)
         {
             string nroCuenta1 = jObject.GetValue("nroCuenta1").ToString() ;
@@ -77,6 +78,13 @@ namespace sFinanciero.Controllers.sFinancieroControllers.MovimientoDeCuenta
             return Ok();
 
         }
+
+
+        //[HttpPost]
+        //[Route("api/RealizarTransferencia")]
+        //[Authorize(Roles = "Admin,Operador,Cliente")]
+        //public IHttpActionResult RealizarTransferencia2(JObject jObject)
+        //{ }
 
         [HttpPost]
         [Route("api/RealizarRetiro")]
