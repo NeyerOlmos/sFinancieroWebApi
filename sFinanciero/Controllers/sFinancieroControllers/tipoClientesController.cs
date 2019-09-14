@@ -19,6 +19,7 @@ namespace sFinanciero.Controllers.sFinancieroControllers
 
         // GET: api/tipoClientes
         public IQueryable<tipoCliente> GettipoCliente()
+
         {
             return db.tipoCliente;
         }

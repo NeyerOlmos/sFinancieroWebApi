@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json.Linq;
 using sFinanciero.DAL;
+using sFinanciero.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,6 +16,40 @@ namespace sFinanciero.Controllers.sFinancieroControllers.MovimientoDeCuenta
     public class movimientoController : ApiController
     {
         private sisFinancieroEntities db = new sisFinancieroEntities();
+        // GET: api/cuentas/ByClienteId/11
+        // [ResponseType(typeof(cuenta))]
+        [HttpPost]
+        [Route("api/CuentasByClienteId")]
+        public IHttpActionResult CuentasByClienteId(JObject jObject)
+        {
+              int idCliente = Convert.ToInt32(jObject.GetValue("id").ToString());
+            cliente cliente =  db.cliente.Find(idCliente);
+            var cuentas = db.cuenta.Where(c => c.idcliente==cliente.id );
+
+            return Ok(cuentas);
+        }
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+        [HttpPost]
+        [Route("api/getIdClienteByUserName")]
+        public IHttpActionResult getIdClienteByUserName(JObject jObject)
+        {
+              string username = jObject.GetValue("username").ToString();
+
+            ApplicationUser user = UserManager.FindByName(username);
+
+            return Ok(user.Id);
+        }
 
         [HttpPost]
         [Route("api/RealizarTransferencia")]

@@ -32,14 +32,6 @@ namespace sFinanciero.Controllers
         public AccountController()
         {
         }
-
-        public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
-        {
-            UserManager = userManager;
-            AccessTokenFormat = accessTokenFormat;
-        }
-
         public ApplicationUserManager UserManager
         {
             get
@@ -51,6 +43,14 @@ namespace sFinanciero.Controllers
                 _userManager = value;
             }
         }
+
+        public AccountController(ApplicationUserManager userManager,
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        {
+            UserManager = userManager;
+            AccessTokenFormat = accessTokenFormat;
+        }
+
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
@@ -331,9 +331,14 @@ namespace sFinanciero.Controllers
             //    return BadRequest(ModelState);
             //}
             
-            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
-            persona persona = new persona() {nombre=model.FirstName,paterno=model.LastName };
-            db.persona.Add(persona);
+            var user = new ApplicationUser() {Id=model.Id, UserName = model.UserName, Email = model.Email };
+            //persona persona = new persona() {nombre=model.FirstName,paterno=model.LastName,materno=model.SecondLastName };
+            //if (model.Roles != null && model.Roles.Contains("Cliente"))
+            //{
+            //cliente cliente = new cliente() { idPersona = persona.id, estado = "Habilitado" ,fechaReg=DateTime.Now.ToLocalTime()};
+
+            //}
+            //db.persona.Add(persona);
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
             UserManager.AddToRoles(user.Id, model.Roles);
@@ -343,7 +348,7 @@ namespace sFinanciero.Controllers
                 return GetErrorResult(result);
             }
             db.SaveChanges();
-            return Ok();
+            return Ok(user.Id);
         }
         // get api/Account/GetRolesByUser
         [Authorize]

@@ -13,7 +13,7 @@ using sFinanciero.DAL;
 
 namespace sFinanciero.Controllers.sFinancieroControllers
 {
-    [Authorize]
+    
     public class clientesController : ApiController
     {
         private sisFinancieroEntities db = new sisFinancieroEntities();
